@@ -1,0 +1,52 @@
+# RAG + Tool Calling Agent · 默认配置
+# 密钥与模型名放 .env，不放本文件
+
+ingest:
+  sample_dir: data/sample
+  uploads_dir: data/uploads
+  supported_extensions:
+    - .md
+    - .pdf
+
+chunking:
+  # 按 token 近似：实现里可用字符粗算或 tiktoken
+  chunk_size: 512
+  chunk_overlap: 64          # 约 10%–20% 量级
+  md_split_by_heading: true
+  # Should：父子分块
+  enable_parent_child: false
+  parent_chunk_size: 1024
+  child_chunk_size: 256      # 约 parent 的 25%
+
+embedding:
+  # 实际模型名以 .env 的 EMBEDDING_MODEL 为准
+  batch_size: 16
+
+retrieval:
+  recall_k: 20               # 粗召回
+  final_k: 5                 # 精排后 / 送入生成
+  score_threshold: null      # null=先不启用；启用后需按当前 Embedding 标定
+  metric: cosine
+  hybrid:
+    enabled: false           # Phase 3 Should：BM25 + 向量
+    rrf_k: 60
+  rerank:
+    enabled: false           # Phase 3 Should
+    top_n: 5
+
+generation:
+  max_context_tokens: 4000
+  cite_style: bracket_n      # 文内 [n]，块头带 source/heading/page
+  refuse_text: "根据现有笔记无法确定。"
+
+agent:
+  max_steps: 6
+  # 检索是否作为可调工具暴露给模型
+  retrieve_as_tool: true
+
+trace:
+  dir: traces
+  save_jsonl: true
+
+paths:
+  chroma: indexes/chroma     # 可被 .env CHROMA_PATH 覆盖

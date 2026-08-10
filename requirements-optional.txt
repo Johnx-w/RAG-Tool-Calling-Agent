@@ -1,0 +1,5 @@
+# Phase 3 / 增强（需要时再装）
+#   .\.venv\Scripts\python.exe -m pip install -r requirements-optional.txt
+rank-bm25>=0.2.2
+jieba>=0.42.1
+rich>=13.7.0
