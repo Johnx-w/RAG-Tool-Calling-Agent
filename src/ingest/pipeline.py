@@ -1,4 +1,4 @@
-"""Ingest pipeline: load → chunk → embed → upsert."""
+"""Ingest pipeline: load → chunk → embed → upsert (+ BM25 sync)."""
 
 from __future__ import annotations
 
@@ -7,9 +7,19 @@ from pathlib import Path
 
 from src.config import ROOT, get_config, get_settings
 from src.ingest.loaders import iter_files, load_path
+from src.rag.bm25 import Bm25Store
 from src.rag.chunking import chunk_documents
 from src.rag.embeddings import Embedder
+from src.rag.retriever import _bm25_path
 from src.rag.vectorstore import VectorStore
+
+# 评估语料白名单，避免 data/sample 里额外 PDF 污染评测
+SAMPLE_ALLOW = {
+    "ml_optimizers.md",
+    "alphacore7_overview.md",
+    "alphacore7_overview.pdf",
+    "hr_kpi_q3.md",
+}
 
 
 @dataclass
@@ -32,11 +42,13 @@ def ingest_paths(paths: list[Path], *, reset_sources: bool = True) -> IngestRepo
         persist_dir=settings.resolved_chroma_path(),
         embedding_model=settings.embedding_model,
     )
+    bm25 = Bm25Store(_bm25_path())
 
     all_docs = []
     files_ok: list[str] = []
     skipped: list[str] = []
     errors: list[str] = []
+    replaced_sources: set[str] = set()
 
     for path in paths:
         try:
@@ -44,12 +56,13 @@ def ingest_paths(paths: list[Path], *, reset_sources: bool = True) -> IngestRepo
             if not docs:
                 skipped.append(str(path))
                 continue
+            source = docs[0].source
             if reset_sources:
-                # one source path may yield multiple page docs; delete once per file
-                store.delete_by_source(docs[0].source)
+                store.delete_by_source(source)
+                replaced_sources.add(source)
             all_docs.extend(docs)
-            files_ok.append(docs[0].source)
-        except Exception as e:  # noqa: BLE001 — collect per-file errors for CLI
+            files_ok.append(source)
+        except Exception as e:  # noqa: BLE001
             errors.append(f"{path}: {e}")
 
     chunks = chunk_documents(
@@ -60,9 +73,10 @@ def ingest_paths(paths: list[Path], *, reset_sources: bool = True) -> IngestRepo
     )
     embeddings = embedder.embed_documents(
         [c.text for c in chunks],
-        batch_size=int(emb_cfg.get("batch_size", 64)),
+        batch_size=int(emb_cfg.get("batch_size", 16)),
     )
     n = store.upsert_chunks(chunks, embeddings)
+    bm25.upsert_chunks(chunks, replace_sources=replaced_sources or None)
     return IngestReport(
         files=files_ok,
         documents=len(all_docs),
@@ -79,4 +93,9 @@ def ingest_directory(directory: Path | None = None) -> IngestReport:
     directory = rel if rel.is_absolute() else ROOT / rel
     exts = ingest_cfg.get("supported_extensions", [".md", ".pdf"])
     files = iter_files(directory, exts)
+
+    sample_dir = (ROOT / ingest_cfg.get("sample_dir", "data/sample")).resolve()
+    if directory.resolve() == sample_dir:
+        files = [f for f in files if f.name in SAMPLE_ALLOW]
+
     return ingest_paths(files)

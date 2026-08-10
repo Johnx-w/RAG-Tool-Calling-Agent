@@ -82,8 +82,8 @@ RAG + Tool Calling Agent/
 | [x] | Embedding 客户端封装（模型名写入索引元数据） | `src/rag/embeddings.py` |
 | [x] | Chroma 写入/查询（余弦；持久化 `indexes/chroma`） | `src/rag/vectorstore.py` |
 | [x] | 检索服务：`recall_k`；返回 text + metadata + score | `src/rag/retriever.py` |
-| [ ] | （Should）BM25 索引 + 与向量 RRF 融合 | `src/rag/bm25.py`, `src/rag/hybrid.py` |
-| [ ] | （Should）Rerank API：20 → 5；精排输入「标题 + chunk」 | `src/rag/rerank.py` |
+| [x] | BM25 索引 + 与向量 RRF 融合 | `src/rag/bm25.py`, `src/rag/hybrid.py` |
+| [x] | Rerank API（可选；无 Key 时跳过） | `src/rag/hybrid.py` |
 | [x] | 上下文拼接、引用块头、`[n]` 校验、拒答模板 | `src/rag/generate.py` |
 
 **阶段验收**：仅 RAG（无 Agent）能回答 3 道纯检索题并带引用。
@@ -122,9 +122,9 @@ RAG + Tool Calling Agent/
 | 状态 | 任务 | 路径 |
 |------|------|------|
 | [x] | ≥20 题题面（含期望动作、金标来源） | `tests/eval_questions.json` |
-| [ ] | 评估跑题脚本（可先半自动：打印模型路径，人工填表） | `scripts/run_eval.py` |
-| [ ] | 结果表：检索是否命中、动作是否正确、忠实/拒答、备注 | `tests/eval_results.md` |
-| [ ] | 至少 3 条失败 case 分析写入结果表 | `tests/eval_results.md` |
+| [x] | 评估跑题脚本（可先半自动：打印模型路径，人工填表） | `scripts/run_eval.py` |
+| [x] | 结果表：检索是否命中、动作是否正确、忠实/拒答、备注 | `tests/eval_results.md` |
+| [x] | 至少 3 条失败 case 分析写入结果表 | `tests/eval_results.md` |
 
 **阶段验收**：F7 + 验收标准 A3 材料齐全。
 
@@ -134,9 +134,9 @@ RAG + Tool Calling Agent/
 
 | 状态 | 任务 | 路径 |
 |------|------|------|
-| [ ] | README 中解释 RAG 完整链路（对照本仓库目录） | `README.md` |
-| [ ] | README 中解释工具调用 vs 普通函数调用（配一条真实 trace） | `README.md` |
-| [ ] | Prompt 设计说明章节（强制） | `README.md` |
+| [x] | README 中解释 RAG 完整链路（对照本仓库目录） | `README.md` |
+| [x] | README 中解释工具调用 vs 普通函数调用（配一条真实 trace） | `README.md` |
+| [x] | Prompt 设计说明章节（强制） | `README.md` |
 
 ---
 
@@ -151,8 +151,10 @@ RAG + Tool Calling Agent/
 
 ## 完成定义（MVP Done）
 
-- [ ] MD / PDF 均可导入并检索  
-- [ ] Agent 能决定是否检索、是否调工具  
-- [ ] ≥2 工具可用；引用 + 拒答生效  
-- [ ] 每问有 trace  
-- [ ] `eval_questions.json` ≥20 题已跑并留下评估与失败分析  
+- [x] MD / PDF 均可导入并检索  
+- [x] Agent 能决定是否检索、是否调工具  
+- [x] ≥2 工具可用；引用 + 拒答生效  
+- [x] 每问有 trace  
+- [x] `eval_questions.json` ≥20 题已跑并留下评估与失败分析  
+
+（可选未做：父子分块；Rerank 需自备 API Key 后打开开关）

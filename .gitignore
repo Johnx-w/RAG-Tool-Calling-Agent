@@ -13,3 +13,5 @@ data/uploads/*
 *.log
 .DS_Store
 out.txt
+retrieve_dump_utf8.txt
+*_dump*.txt

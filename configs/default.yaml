@@ -28,10 +28,10 @@ retrieval:
   score_threshold: null      # null=先不启用；启用后需按当前 Embedding 标定
   metric: cosine
   hybrid:
-    enabled: false           # Phase 3 Should：BM25 + 向量
+    enabled: true            # Phase 3：BM25 + 向量 RRF
     rrf_k: 60
   rerank:
-    enabled: false           # Phase 3 Should
+    enabled: false           # 设置 COHERE_API_KEY 或 JINA_API_KEY 后可改为 true
     top_n: 5
 
 generation:
@@ -50,3 +50,4 @@ trace:
 
 paths:
   chroma: indexes/chroma     # 可被 .env CHROMA_PATH 覆盖
+  bm25: indexes/bm25/corpus.json
