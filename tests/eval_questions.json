@@ -98,8 +98,8 @@
       "expected_actions": ["calculator", "finish"],
       "expected_status": "answered",
       "gold_sources": [],
-      "gold_answer_points": ["212"],
-      "notes": "不应检索文档"
+      "gold_answer_points": ["188"],
+      "notes": "不应检索文档；(35+17)*4-20=188"
     },
     {
       "id": "T02",

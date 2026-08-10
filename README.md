@@ -12,8 +12,8 @@
 | 阶段 | 状态 |
 |------|------|
 | Phase 0 配置与语料契约 | 已完成 |
-| Phase 1 RAG 闭环 | 代码已落地；需配置可用 Embedding API 后跑通 ingest |
-| Phase 2 Agent + 工具 | 未开工 |
+| Phase 1 RAG 闭环 | 已完成 |
+| Phase 2 Agent + 工具 | 已完成（calculator / time / retrieve + Trace） |
 | Phase 3 评估增强 | 未开工 |
 
 ## 快速准备（Phase 0）

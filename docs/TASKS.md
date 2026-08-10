@@ -94,9 +94,9 @@ RAG + Tool Calling Agent/
 
 | 状态 | 任务 | 路径 |
 |------|------|------|
-| [ ] | `calculator`：安全表达式计算 | `src/tools/calculator.py` |
-| [ ] | `get_current_time`：日期时间星期 | `src/tools/time_tool.py` |
-| [ ] | 工具注册表 + OpenAI tool schema 导出 | `src/tools/registry.py` |
+| [x] | `calculator`：安全表达式计算 | `src/tools/calculator.py` |
+| [x] | `get_current_time`：日期时间星期 | `src/tools/time_tool.py` |
+| [x] | 工具注册表 + OpenAI tool schema 导出 | `src/tools/registry.py` |
 | [ ] | （Should）`find_indexed_file` | `src/tools/file_query.py` |
 
 **阶段验收**：脱离 Agent，单测/脚本可直接调用两工具得到正确结果。
@@ -107,11 +107,11 @@ RAG + Tool Calling Agent/
 
 | 状态 | 任务 | 路径 |
 |------|------|------|
-| [ ] | 系统 Prompt：何时 retrieve / tool / 拒答；禁止用外部知识冒充文档 | `src/agent/prompts.py` |
-| [ ] | Agent 循环：最多 N 步；动作 `retrieve` \| `tool` \| `finish` | `src/agent/loop.py` |
-| [ ] | 将「知识库检索」注册为可调工具（或显式 action） | `src/agent/loop.py` |
-| [ ] | Trace：reasoning 摘要、action、input、observation 摘要、最终答案 | `src/agent/trace.py` → `traces/*.jsonl` |
-| [x] | CLI：`ask` / `ingest` / `ingest-sample`（Phase 1；`show-trace` 待 Phase 2） | `src/main.py` |
+| [x] | 系统 Prompt：何时 retrieve / tool / 拒答；禁止用外部知识冒充文档 | `src/agent/prompts.py` |
+| [x] | Agent 循环：最多 N 步；动作 `retrieve` \| `tool` \| `finish` | `src/agent/loop.py` |
+| [x] | 将「知识库检索」注册为可调工具（或显式 action） | `src/agent/loop.py` / `src/tools/registry.py` |
+| [x] | Trace：reasoning 摘要、action、input、observation 摘要、最终答案 | `src/agent/trace.py` → `traces/*.json` |
+| [x] | CLI：`ask` / `ingest` / `show-trace`（`--rag-only` 保留 Phase 1） | `src/main.py` |
 
 **阶段验收**：纯工具题、混合题、拒答题各至少 1 道动作序列正确，且有 trace。
 
