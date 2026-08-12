@@ -12,7 +12,7 @@
 RAG + Tool Calling Agent/
 ├── .env.example
 ├── requirements.txt
-├── README.md                 # 含 Prompt 设计说明（见 README-Prompt规范）
+├── README.md                 # 含 Prompt 设计说明
 ├── docs/
 │   ├── TECH_STACK.md
 │   └── TASKS.md              # 本文件
