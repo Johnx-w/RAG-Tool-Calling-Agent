@@ -63,8 +63,10 @@ def maybe_rerank(
             return _rerank_cohere(query, hits, docs, top_n, cohere_key)
         if jina_key:
             return _rerank_jina(query, hits, docs, top_n, jina_key)
-    except Exception:
+        print("[rerank] enabled=true 但未配置 COHERE_API_KEY / JINA_API_KEY，跳过精排")
+    except Exception as e:
         # fail open: keep fused order
+        print(f"[rerank] 调用失败，回退到混合检索排序: {e}")
         return hits[:top_n]
     return hits[:top_n]
 
