@@ -52,7 +52,7 @@ RAG + Tool Calling Agent/
 | [x] | `requirements.txt` 按 TECH_STACK 列出依赖 | `requirements.txt` |
 | [x] | `.env.example` + `.gitignore`（`.env`、`indexes/`、`traces/`） | 根目录 |
 | [x] | `configs/default.yaml`：`chunk_size`/`overlap`/`recall_k=20`/`final_k=5` | `configs/default.yaml` |
-| [x] | 根 `README.md`：用法 + **Prompt 设计说明**（遵守 `README-Prompt规范.md`） | `README.md` |
+| [x] | 根 `README.md`：用法 + **Prompt 设计说明** | `README.md` |
 
 ---
 

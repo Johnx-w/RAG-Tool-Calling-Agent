@@ -15,3 +15,5 @@ data/uploads/*
 out.txt
 retrieve_dump_utf8.txt
 *_dump*.txt
+# 本地写作规范，不入库
+README-Prompt规范.md

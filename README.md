@@ -5,7 +5,6 @@
 - 技术栈：[docs/TECH_STACK.md](docs/TECH_STACK.md)
 - 任务清单：[docs/TASKS.md](docs/TASKS.md)
 - 评估题：[tests/eval_questions.json](tests/eval_questions.json)
-- Prompt 规范：[README-Prompt规范.md](README-Prompt规范.md)
 
 ## 当前进度
 
