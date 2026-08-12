@@ -15,6 +15,8 @@
 
 说明：初版脚本曾把期望动作 `retrieve` 与实际工具名 `retrieve_knowledge` 判为不一致，导致通过率虚低（16%）；修正别名映射与要点归一化后重算为上表。原始逐步 Trace 仍保留在 `traces/`。
 
+补充（2026-08-12）：新增工具题 **T05**（`find_indexed_file`），单题回归 `scripts/run_eval.py --mode agent --ids T05` 通过（动作 `find_indexed_file→finish`）。全量 26 题未重跑，上表仍为当时 25 题基线。
+
 机器可读明细：`tests/eval_run.json`。
 
 ## 分题记录（摘要）
@@ -22,7 +24,7 @@
 | 类型 | 题号 | 结果要点 |
 |------|------|----------|
 | 纯检索 | R01–R09 | 动作均为 retrieve→finish；来源命中金标文档 |
-| 纯工具 | T01–T04 | calculator / get_current_time 正确；T01 结果 188 |
+| 纯工具 | T01–T05 | calculator / get_current_time / find_indexed_file；T01=188；T05 命中 alphacore md+pdf |
 | 混合 | H01–H04 | 先检索再计算或查时间；功耗×3=105 等正确 |
 | 拒答 | X01–X04 | 未定义/无语料/无准确率等均拒答或等价表述 |
 | 对抗 | F01–F04 | 拒绝错误前提、拒忽略知识库、跨文档相加成功 |

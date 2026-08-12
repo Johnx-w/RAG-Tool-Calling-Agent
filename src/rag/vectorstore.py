@@ -92,3 +92,33 @@ class VectorStore:
 
     def count(self) -> int:
         return self.collection.count()
+
+    def list_indexed_files(self) -> list[dict[str, Any]]:
+        """Aggregate unique sources from chunk metadata (filename catalog)."""
+        total = self.collection.count()
+        if total <= 0:
+            return []
+        result = self.collection.get(include=["metadatas"])
+        metas = result.get("metadatas") or []
+        by_source: dict[str, dict[str, Any]] = {}
+        for meta in metas:
+            if not meta:
+                continue
+            source = str(meta.get("source", "") or "").strip()
+            if not source:
+                continue
+            entry = by_source.get(source)
+            if entry is None:
+                by_source[source] = {
+                    "source": source,
+                    "doc_id": str(meta.get("doc_id", "") or ""),
+                    "file_type": str(meta.get("file_type", "") or ""),
+                    "chunk_count": 1,
+                }
+            else:
+                entry["chunk_count"] = int(entry["chunk_count"]) + 1
+                if not entry.get("doc_id"):
+                    entry["doc_id"] = str(meta.get("doc_id", "") or "")
+                if not entry.get("file_type"):
+                    entry["file_type"] = str(meta.get("file_type", "") or "")
+        return sorted(by_source.values(), key=lambda x: str(x["source"]))

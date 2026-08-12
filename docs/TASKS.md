@@ -97,7 +97,7 @@ RAG + Tool Calling Agent/
 | [x] | `calculator`：安全表达式计算 | `src/tools/calculator.py` |
 | [x] | `get_current_time`：日期时间星期 | `src/tools/time_tool.py` |
 | [x] | 工具注册表 + OpenAI tool schema 导出 | `src/tools/registry.py` |
-| [ ] | （Should）`find_indexed_file` | `src/tools/file_query.py` |
+| [x] | （Should）`find_indexed_file` | `src/tools/file_query.py` |
 
 **阶段验收**：脱离 Agent，单测/脚本可直接调用两工具得到正确结果。
 
@@ -111,7 +111,7 @@ RAG + Tool Calling Agent/
 | [x] | Agent 循环：最多 N 步；动作 `retrieve` \| `tool` \| `finish` | `src/agent/loop.py` |
 | [x] | 将「知识库检索」注册为可调工具（或显式 action） | `src/agent/loop.py` / `src/tools/registry.py` |
 | [x] | Trace：reasoning 摘要、action、input、observation 摘要、最终答案 | `src/agent/trace.py` → `traces/*.json` |
-| [x] | CLI：`ask` / `ingest` / `show-trace`（`--rag-only` 保留 Phase 1） | `src/main.py` |
+| [x] | （Should）Streamlit UI：对话 / 知识库 / Trace | `app/streamlit_app.py` |
 
 **阶段验收**：纯工具题、混合题、拒答题各至少 1 道动作序列正确，且有 trace。
 

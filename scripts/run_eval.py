@@ -36,6 +36,9 @@ def _canon_action(name: str) -> str:
         "calc": "calculator",
         "get_current_time": "get_current_time",
         "time": "get_current_time",
+        "find_indexed_file": "find_indexed_file",
+        "find_file": "find_indexed_file",
+        "file_query": "find_indexed_file",
         "finish": "finish",
     }
     return aliases.get(n, n)

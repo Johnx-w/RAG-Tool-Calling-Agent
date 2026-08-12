@@ -130,6 +130,16 @@
       "gold_answer_points": ["小时", "分钟"]
     },
     {
+      "id": "T05",
+      "category": "纯工具",
+      "question": "知识库里有没有文件名包含 alphacore 的已导入文档？请列出路径。",
+      "expected_actions": ["find_indexed_file", "finish"],
+      "expected_status": "answered",
+      "gold_sources": ["data/sample/alphacore7_overview.md", "data/sample/alphacore7_overview.pdf"],
+      "gold_answer_points": ["alphacore7_overview.md", "alphacore7_overview.pdf"],
+      "notes": "应走 find_indexed_file（文件目录查询），不要用 retrieve_knowledge 做语义检索"
+    },
+    {
       "id": "H01",
       "category": "混合",
       "question": "查阅 AlphaCore-7 的额定功耗（单位 W），再计算它的 3 倍是多少。",

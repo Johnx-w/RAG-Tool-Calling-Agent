@@ -8,6 +8,7 @@ from typing import Any, Callable
 from src.rag.generate import build_context
 from src.rag.retriever import Retriever
 from src.tools.calculator import calculate
+from src.tools.file_query import find_indexed_file
 from src.tools.time_tool import get_current_time
 
 ToolHandler = Callable[..., str]
@@ -41,6 +42,7 @@ def _retrieve_knowledge(query: str, top_k: int | None = None) -> str:
 HANDLERS: dict[str, ToolHandler] = {
     "calculator": lambda expression: calculate(expression),
     "get_current_time": lambda: get_current_time(),
+    "find_indexed_file": lambda name_query="": find_indexed_file(str(name_query or "")),
     "retrieve_knowledge": lambda query, top_k=None: _retrieve_knowledge(
         query, int(top_k) if top_k is not None else None
     ),
@@ -80,6 +82,29 @@ def openai_tool_schemas() -> list[dict[str, Any]]:
                 "parameters": {
                     "type": "object",
                     "properties": {},
+                },
+            },
+        },
+        {
+            "type": "function",
+            "function": {
+                "name": "find_indexed_file",
+                "description": (
+                    "按文件名/路径关键字查询「已经导入」的文档清单（元数据目录，不是语义检索）。"
+                    "当用户问「有没有某份文件」「导入了哪些 PDF/Markdown」「文件叫什么」时使用。"
+                    "需要文档内容、定义、参数时请改用 retrieve_knowledge。"
+                ),
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "name_query": {
+                            "type": "string",
+                            "description": (
+                                "文件名或路径子串，如 alphacore、hr_kpi、.pdf；"
+                                "空字符串表示列出全部已导入文档"
+                            ),
+                        }
+                    },
                 },
             },
         },
@@ -132,6 +157,8 @@ def run_tool(name: str, arguments: dict[str, Any] | str | None) -> str:
             return HANDLERS[name](expression=str(args.get("expression", "")))
         if name == "get_current_time":
             return HANDLERS[name]()
+        if name == "find_indexed_file":
+            return HANDLERS[name](name_query=str(args.get("name_query", "")))
         if name == "retrieve_knowledge":
             return HANDLERS[name](
                 query=str(args.get("query", "")),

@@ -1,0 +1,14 @@
+[client]
+# 隐藏本机开发时的 Deploy / 云端部署入口等开发者工具栏项
+toolbarMode = "viewer"
+
+[browser]
+gatherUsageStats = false
+
+[theme]
+base = "light"
+primaryColor = "#2f7a5b"
+backgroundColor = "#f3f8f5"
+secondaryBackgroundColor = "#ffffff"
+textColor = "#15261d"
+font = "sans serif"
